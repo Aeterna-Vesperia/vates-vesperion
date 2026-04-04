@@ -17,9 +17,11 @@ const Card = ({
 }) => {
   const badge = badgeText !== undefined ? badgeText : 'indisponivel'
 
+    let showDiscount = discount && !indisponivel;
+
+
   // Calcula preço com desconto se houver discount
   let finalPrice = price
-  let showDiscount = false
   let originalToShow = originalPrice
   if (discount && !indisponivel) {
     // Aceita desconto como string 'R$ 2,00' ou número

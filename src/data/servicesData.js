@@ -40,7 +40,6 @@ export const servicesData = [
     oracles: {
       cleromancia: {
         price: 'R$ 12,00',
-        discount: 'R$ 2,00',
       },    },
   },
   {
@@ -52,11 +51,9 @@ export const servicesData = [
     oracles: {
       cigano: {
         price: 'R$ 30,00',
-        discount: 'R$ 4,00',
       },
       tarot: {
         price: 'R$ 36,00',
-        discount: 'R$ 4,00',
       },
     },
   },
@@ -69,11 +66,9 @@ export const servicesData = [
     oracles: {
       cigano: {
         price: 'R$ 50,00',
-        discount: 'R$ 6,00',
       },
       tarot: {
         price: 'R$ 60,00',
-        discount: 'R$ 6,00',
       },
     },
     destacado: true
@@ -87,11 +82,9 @@ export const servicesData = [
     oracles: {
       tarot: {
         price: 'R$ 110,00',
-        discount: 'R$ 11,00',
       },
       cigano: {
         price: 'R$ 90,00',
-        discount: 'R$ 11,00',
       },
     },
   },

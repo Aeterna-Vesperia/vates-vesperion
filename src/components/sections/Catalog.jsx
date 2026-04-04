@@ -1,88 +1,115 @@
-import React, { useState } from 'react'
-import { servicesData } from '../../data/servicesData'
-import Card from '../common/Card'
-import Carousel from '../common/Carousel'
-import { renderIcon } from '../../utils/iconHelper'
-import CategoryFilter from '../common/CategoryFilter'
+import React, { useState } from 'react';
+import { servicesData } from '../../data/servicesData';
+import { applyPromotions } from '../../utils/promotionHelper';
+import Card from '../common/Card';
+import Carousel from '../common/Carousel';
+import { renderIcon } from '../../utils/iconHelper';
+import CategoryFilter from '../common/CategoryFilter';
+import { useSelector } from 'react-redux';
 
-const categories = [...new Set(servicesData.map(s => s.category))]
-
-
-function extractOracleField(card, field) {
-  // Se card.oracles existe, pega menor valor entre price/discount/originalPrice
+export function extractOracleField(card, field) {
   if (card.oracles && typeof card.oracles === 'object') {
-    let values = []
+    let values = [];
     for (const key in card.oracles) {
-      if (card.oracles[key] && typeof card.oracles[key] === 'object' && card.oracles[key][field]) {
-        values.push(card.oracles[key][field])
-      } else if (card.oracles[key] && typeof card.oracles[key] === 'string' && field === 'price') {
-        values.push(card.oracles[key])
+      if (
+        card.oracles[key] &&
+        typeof card.oracles[key] === 'object' &&
+        card.oracles[key][field]
+      ) {
+        values.push(card.oracles[key][field]);
       }
     }
-    // Se valores são strings tipo 'R$ 10,00', pega o menor
+    console.log('Extracted values for field:', field, values);
     if (values.length) {
-      const nums = values.map(v => parseFloat(String(v).replace(/[^\d,]/g, '').replace(',', '.')))
-      const min = Math.min(...nums)
-      return `R$ ${min.toFixed(2).replace('.', ',')}`
+      const nums = values
+        .map((v) => parseFloat(String(v).replace(/[^\d,]/g, '').replace(',', '.')))
+        .filter((num) => !isNaN(num)); // Filtra valores inválidos
+      console.log('Valid numeric values:', nums);
+      if (nums.length > 0) {
+        const min = Math.min(...nums);
+        console.log('Minimum value:', min);
+        return min; // Retorna o valor numérico mínimo
+      }
     }
   }
-  return ''
+  console.log('No valid values found for field:', field);
+  return 0; // Retorna 0 se não houver valores válidos
 }
 
 function extractOracleDiscount(card) {
   if (card.oracles && typeof card.oracles === 'object') {
-    let values = []
+    let values = [];
     for (const key in card.oracles) {
-      if (card.oracles[key] && typeof card.oracles[key] === 'object' && card.oracles[key].discount) {
-        values.push(card.oracles[key].discount)
+      if (
+        card.oracles[key] &&
+        typeof card.oracles[key] === 'object' &&
+        card.oracles[key].discount
+      ) {
+        values.push(
+          parseFloat(
+            String(card.oracles[key].discount)
+              .replace(/[^\d,]/g, '')
+              .replace(',', '.')
+          )
+        );
       }
     }
-    if (values.length) {
-      const nums = values.map(v => parseFloat(String(v).replace(/[^\d,]/g, '').replace(',', '.')))
-      const min = Math.min(...nums)
-      return min
+    const validDiscounts = values.filter((v) => !isNaN(v));
+    if (validDiscounts.length > 0) {
+      return Math.min(...validDiscounts); // Retorna o menor desconto válido
     }
   }
-  return ''
+  return 0; // Retorna 0 se não houver descontos válidos
 }
 
 const Catalog = () => {
-  return (
-    <section id="store" className="mt-7 md:mt-5 mx-2 md:mx-16 py-12 px-4 sm:py-16 md:py-20">
-      <div className="max-w-8xl mx-auto">
-        {categories.map(category => {
-          // Filtra os serviços da categoria
-          const cards = servicesData.filter(s => s.category === category)
-          // Extrai subcategorias únicas e adiciona "Todos"
-          const subcategoriesBase = [
-            ...new Set(cards.map(s => s.subcategory).filter(Boolean))
-          ].map(sc => ({ id: sc, name: sc }))
-          
-          const subcategories = subcategoriesBase.length > 0 
-            ? [{ id: '', name: 'Todos' }, ...subcategoriesBase]
-            : []
-          // Estado do filtro de subcategoria
-          const [activeSubcategory, setActiveSubcategory] = useState('')
-          // Filtra os cards pela subcategoria selecionada
-          const filteredCards = activeSubcategory
-            ? cards.filter(s => s.subcategory === activeSubcategory)
-            : cards
+  const categories = [...new Set(servicesData.map((s) => s.category))];
 
-          // Ordenação dos cards
+  const promotions = useSelector((state) => state.promotions.activePromotions);
+  return (
+    <section
+      id="store"
+      className="mt-7 md:mt-5 mx-2 md:mx-16 py-12 px-4 sm:py-16 md:py-20"
+    >
+      <div className="max-w-8xl mx-auto">
+        {categories.map((category) => {
+          const cards = servicesData.filter((s) => s.category === category);
+          const subcategoriesBase = [
+            ...new Set(cards.map((s) => s.subcategory).filter(Boolean)),
+          ].map((sc) => ({ id: sc, name: sc }));
+
+          const subcategories =
+            subcategoriesBase.length > 0
+              ? [{ id: '', name: 'Todos' }, ...subcategoriesBase]
+              : [];
+
+          const [activeSubcategory, setActiveSubcategory] = useState('');
+          const filteredCards = activeSubcategory
+            ? cards.filter((s) => s.subcategory === activeSubcategory)
+            : cards;
+
           const sortedCards = filteredCards.sort((a, b) => {
-            // "Sim ou não?" sempre primeiro
-            if (a.title.toLowerCase().includes('sim ou não')) return -1
-            if (b.title.toLowerCase().includes('sim ou não')) return 1
-            // Menor preço (preferencialmente cigano)
-            let priceA = 0, priceB = 0
-            if (a.oracles) priceA = parseFloat(extractOracleField(a, 'price').replace(/[^\d,]/g, '').replace(',', '.'))
-            else if (a.cigano) priceA = parseFloat(a.cigano.price.replace(/[^\d,]/g, '').replace(',', '.'))
-            else if (a.tarot) priceA = parseFloat(a.tarot.price.replace(/[^\d,]/g, '').replace(',', '.'))
-            if (b.oracles) priceB = parseFloat(extractOracleField(b, 'price').replace(/[^\d,]/g, '').replace(',', '.'))
-            else if (b.cigano) priceB = parseFloat(b.cigano.price.replace(/[^\d,]/g, '').replace(',', '.'))
-            else if (b.tarot) priceB = parseFloat(b.tarot.price.replace(/[^\d,]/g, '').replace(',', '.'))
-            return priceA - priceB
-          })
+            if (a.title.toLowerCase().includes('sim ou não')) return -1;
+            if (b.title.toLowerCase().includes('sim ou não')) return 1;
+
+            const getPrice = (card) => {
+              if (card.oracles) {
+                const price = extractOracleField(card, 'price');
+                return price !== null ? price : 0;
+              } else if (card.cigano) {
+                return parseFloat(
+                  card.cigano.price.replace(/[^\d,]/g, '').replace(',', '.')
+                );
+              } else if (card.tarot) {
+                return parseFloat(
+                  card.tarot.price.replace(/[^\d,]/g, '').replace(',', '.')
+                );
+              }
+              return 0;
+            };
+
+            return getPrice(a) - getPrice(b);
+          });
 
           return (
             <div key={category} className="mb-16 max-w-7xl mx-auto">
@@ -97,54 +124,88 @@ const Catalog = () => {
                 />
               )}
               <div className="relative flex items-start mt-6 max-h-[400px]">
-                <Carousel slidesToShow={4} >
-                {sortedCards.map(card => {
-                  let price = '', originalPrice = '', discount = ''
-                  if (card.oracles) {
-                    price = extractOracleField(card, 'price')
-                    originalPrice = '' // Se quiser mostrar original, pode adaptar
-                    discount = extractOracleDiscount(card)
-                  } else if (card.cigano) {
-                    price = card.cigano.price
-                    originalPrice = ''
-                    discount = card.cigano.discount || ''
-                  } else if (card.tarot) {
-                    price = card.tarot.price
-                    originalPrice = ''
-                    discount = card.tarot.discount || ''
-                  }
-                  return (
-                    <div className="h-full flex items-start justify-start py-2" key={card.title}>
-                      <Card
-                        title={card.title}
-                        description={card.description}
-                        price={price}
-                        originalPrice={originalPrice}
-                        discount={discount}
-                        icon={card.icon ? renderIcon(card.icon, { size: 32, className: "text-gold mb-2" }) : null}
-                        destacado={!!card.destacado}
-                        badgeText={card.badgeText}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        initial={{ opacity: 0, y: 40 }}
-                        whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(255, 215, 0, 0.25)' }}
-                        transition={{
-                          duration: 0.7,
-                          delay: 0.1,
-                          scale: { duration: 0.3 },
-                          boxShadow: { duration: 0.3 },
-                        }}
-                        viewport={{ once: true }}
-                      />
-                    </div>
-                  )
-                })}
+                <Carousel slidesToShow={4}>
+                  {sortedCards.map((card) => {
+                    const promotionDiscount = applyPromotions(card, promotions);
+                    const basePrice = card.oracles
+                      ? extractOracleField(card, 'price')
+                      : card.price
+                      ? parseFloat(
+                          card.price.replace(/[^\d,]/g, '').replace(',', '.')
+                        )
+                      : 0;
+
+                    console.log('Base Price:', basePrice);
+                    console.log('Promotion Discount:', promotionDiscount);
+
+                    const discount =
+                      promotionDiscount > 0
+                        ? promotionDiscount
+                        : extractOracleDiscount(card);
+
+                    console.log('Final Discount:', discount);
+
+                    const finalPrice = basePrice - discount;
+
+                    console.log('Final Price:', finalPrice);
+
+                    const formattedPrice = `R$ ${finalPrice
+                      .toFixed(2)
+                      .replace('.', ',')}`;
+                    const formattedOriginalPrice =
+                      basePrice > 0
+                        ? `R$ ${basePrice.toFixed(2).replace('.', ',')}`
+                        : `R$ 0,00`;
+
+                    return (
+                      <div
+                        className="h-full flex items-start justify-start py-2"
+                        key={card.title}
+                      >
+                        <Card
+                          title={card.title}
+                          description={card.description}
+                          price={formattedPrice}
+                          originalPrice={formattedOriginalPrice}
+                          discount={discount > 0 ? discount : null}
+                          promotionMessage={
+                            discount > 0 ? 'Promoção ativa!' : ''
+                          }
+                          icon={
+                            card.icon
+                              ? renderIcon(card.icon, {
+                                  size: 32,
+                                  className: 'text-gold mb-2',
+                                })
+                              : null
+                          }
+                          destacado={!!card.destacado}
+                          badgeText={card.badgeText}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          initial={{ opacity: 0, y: 40 }}
+                          whileHover={{
+                            scale: 1.04,
+                            boxShadow: '0 8px 32px 0 rgba(255, 215, 0, 0.25)',
+                          }}
+                          transition={{
+                            duration: 0.7,
+                            delay: 0.1,
+                            scale: { duration: 0.3 },
+                            boxShadow: { duration: 0.3 },
+                          }}
+                          viewport={{ once: true }}
+                        />
+                      </div>
+                    );
+                  })}
                 </Carousel>
               </div>
             </div>
-          )
+          );
         })}
       </div>
     </section>
-  )
-}
-export default Catalog
+  );
+};
+
+export default Catalog;
