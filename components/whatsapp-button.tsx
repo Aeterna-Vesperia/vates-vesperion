@@ -2,11 +2,15 @@
 
 import { MessageCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useLocale } from '@/lib/locale-context'
 
 export function WhatsAppButton() {
+  const { t } = useLocale()
+  const whatsappMessage = encodeURIComponent(t.shopPage.whatsappMessage)
+  
   return (
     <a
-      href="https://wa.me/5521972592555?text=Olá! Gostaria de saber mais sobre as consultas."
+      href={`https://wa.me/5521972592555?text=${whatsappMessage}`}
       target="_blank"
       rel="noopener noreferrer"
       className={cn(

@@ -81,7 +81,13 @@ export const translations = {
       oracles: 'Meus Oráculos',
       howItWorks: 'Como funciona uma consulta',
       faq: 'Perguntas Frequentes',
-      book: 'Agendar'
+      book: 'Agendar',
+      step1Title: 'Escolha',
+      step1Desc: 'Selecione o serviço ideal para sua necessidade',
+      step2Title: 'Agende',
+      step2Desc: 'Escolha o melhor horário para sua consulta',
+      step3Title: 'Conecte',
+      step3Desc: 'Receba sua leitura via chamada de vídeo ou áudio'
     },
     shopPage: {
       hero: 'Loja Vesperyx',
@@ -91,7 +97,9 @@ export const translations = {
       cart: 'Carrinho',
       emptyCart: 'Seu carrinho está vazio',
       total: 'Total',
-      checkout: 'Finalizar Compra'
+      checkout: 'Finalizar Compra',
+      emptyState: 'Nenhum produto encontrado',
+      whatsappMessage: 'Olá! Gostaria de saber mais sobre as consultas e produtos.'
     },
     aboutPage: {
       title: 'Sobre Mim',
@@ -105,7 +113,31 @@ export const translations = {
       phone: 'Telefone',
       message: 'Mensagem',
       send: 'Enviar Mensagem',
-      whatsapp: 'Falar pelo WhatsApp'
+      whatsapp: 'Falar pelo WhatsApp',
+      talkToMe: 'Fale Comigo',
+      sendMessage: 'Envie uma Mensagem',
+      messageSent: 'Mensagem Enviada!',
+      thankYou: 'Retornarei em breve. Obrigado pelo contato!',
+      fullName: 'Seu nome completo',
+      emailPlaceholder: 'seu@email.com',
+      phonePlaceholder: '(21) 99999-9999',
+      messagePlaceholder: 'Conte-me como posso ajudá-lo...',
+      sending: 'Enviando...'
+    },
+    blogCategories: {
+      tarot: 'Tarot',
+      oracles: 'Oráculos',
+      tips: 'Dicas'
+    },
+    blogPage: {
+      newsletter: 'Receba novidades e insights',
+      newsletterDesc: 'Inscreva-se para receber artigos, dicas e ofertas exclusivas diretamente no seu e-mail.',
+      emailPlaceholder: 'Seu melhor e-mail',
+      subscribe: 'Inscrever-se',
+      backToBlog: 'Voltar ao blog'
+    },
+    common: {
+      minutes: 'minutos'
     }
   },
   en: {
@@ -179,7 +211,13 @@ export const translations = {
       oracles: 'My Oracles',
       howItWorks: 'How a consultation works',
       faq: 'Frequently Asked Questions',
-      book: 'Book'
+      book: 'Book',
+      step1Title: 'Choose',
+      step1Desc: 'Select the ideal service for your need',
+      step2Title: 'Schedule',
+      step2Desc: 'Choose the best time for your consultation',
+      step3Title: 'Connect',
+      step3Desc: 'Receive your reading via video or audio call'
     },
     shopPage: {
       hero: 'Vesperyx Shop',
@@ -189,7 +227,9 @@ export const translations = {
       cart: 'Cart',
       emptyCart: 'Your cart is empty',
       total: 'Total',
-      checkout: 'Checkout'
+      checkout: 'Checkout',
+      emptyState: 'No products found',
+      whatsappMessage: 'Hello! I would like to know more about the consultations and products.'
     },
     aboutPage: {
       title: 'About Me',
@@ -203,7 +243,31 @@ export const translations = {
       phone: 'Phone',
       message: 'Message',
       send: 'Send Message',
-      whatsapp: 'Chat on WhatsApp'
+      whatsapp: 'Chat on WhatsApp',
+      talkToMe: 'Talk to Me',
+      sendMessage: 'Send a Message',
+      messageSent: 'Message Sent!',
+      thankYou: 'I will get back to you soon. Thank you for contacting me!',
+      fullName: 'Your full name',
+      emailPlaceholder: 'your@email.com',
+      phonePlaceholder: '(21) 99999-9999',
+      messagePlaceholder: 'Tell me how I can help you...',
+      sending: 'Sending...'
+    },
+    blogCategories: {
+      tarot: 'Tarot',
+      oracles: 'Oracles',
+      tips: 'Tips'
+    },
+    blogPage: {
+      newsletter: 'Receive news and insights',
+      newsletterDesc: 'Subscribe to receive articles, tips, and exclusive offers directly in your email.',
+      emailPlaceholder: 'Your best email',
+      subscribe: 'Subscribe',
+      backToBlog: 'Back to blog'
+    },
+    common: {
+      minutes: 'minutes'
     }
   },
   es: {
@@ -277,7 +341,13 @@ export const translations = {
       oracles: 'Mis Oráculos',
       howItWorks: 'Cómo funciona una consulta',
       faq: 'Preguntas Frecuentes',
-      book: 'Agendar'
+      book: 'Agendar',
+      step1Title: 'Elige',
+      step1Desc: 'Selecciona el servicio ideal para tu necesidad',
+      step2Title: 'Agenda',
+      step2Desc: 'Elige el mejor momento para tu consulta',
+      step3Title: 'Conecta',
+      step3Desc: 'Recibe tu lectura a través de videollamada o llamada de audio'
     },
     shopPage: {
       hero: 'Tienda Vesperyx',
@@ -287,7 +357,9 @@ export const translations = {
       cart: 'Carrito',
       emptyCart: 'Tu carrito está vacío',
       total: 'Total',
-      checkout: 'Finalizar Compra'
+      checkout: 'Finalizar Compra',
+      emptyState: 'No se encontraron productos',
+      whatsappMessage: '¡Hola! Me gustaría saber más sobre las consultas y productos.'
     },
     aboutPage: {
       title: 'Sobre Mí',
@@ -301,7 +373,31 @@ export const translations = {
       phone: 'Teléfono',
       message: 'Mensaje',
       send: 'Enviar Mensaje',
-      whatsapp: 'Hablar por WhatsApp'
+      whatsapp: 'Hablar por WhatsApp',
+      talkToMe: 'Háblame',
+      sendMessage: 'Envía un Mensaje',
+      messageSent: '¡Mensaje Enviado!',
+      thankYou: 'Te responderé pronto. ¡Gracias por contactarme!',
+      fullName: 'Tu nombre completo',
+      emailPlaceholder: 'tu@email.com',
+      phonePlaceholder: '(21) 99999-9999',
+      messagePlaceholder: 'Cuéntame cómo puedo ayudarte...',
+      sending: 'Enviando...'
+    },
+    blogCategories: {
+      tarot: 'Tarot',
+      oracles: 'Oráculos',
+      tips: 'Consejos'
+    },
+    blogPage: {
+      newsletter: 'Recibe noticias e insights',
+      newsletterDesc: 'Suscríbete para recibir artículos, consejos y ofertas exclusivas directamente en tu correo.',
+      emailPlaceholder: 'Tu mejor correo',
+      subscribe: 'Suscribirse',
+      backToBlog: 'Volver al blog'
+    },
+    common: {
+      minutes: 'minutos'
     }
   }
 } as const

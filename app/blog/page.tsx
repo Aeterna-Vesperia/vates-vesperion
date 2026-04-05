@@ -109,22 +109,22 @@ export default function BlogPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-4">
-              Receba novidades e insights
+              {t.blogPage.newsletter}
             </h2>
             <p className="text-muted-foreground mb-8">
-              Inscreva-se para receber artigos, dicas e ofertas exclusivas diretamente no seu e-mail.
+              {t.blogPage.newsletterDesc}
             </p>
             <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
               <input
                 type="email"
-                placeholder="Seu melhor e-mail"
+                placeholder={t.blogPage.emailPlaceholder}
                 className="flex-1 px-4 py-3 bg-background border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors"
               />
               <button
                 type="submit"
                 className="bg-gold-gradient text-primary-foreground px-6 py-3 rounded-lg font-semibold transition-all hover:shadow-lg hover:shadow-primary/30 whitespace-nowrap"
               >
-                Inscrever-se
+                {t.blogPage.subscribe}
               </button>
             </form>
           </div>

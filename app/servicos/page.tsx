@@ -316,16 +316,16 @@ export default function ServicosPage() {
           </h2>
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { step: 1, title: 'Escolha', titleEn: 'Choose', titleEs: 'Elige', desc: 'Selecione o serviço ideal para sua necessidade' },
-              { step: 2, title: 'Agende', titleEn: 'Schedule', titleEs: 'Agenda', desc: 'Escolha o melhor horário para sua consulta' },
-              { step: 3, title: 'Conecte', titleEn: 'Connect', titleEs: 'Conecta', desc: 'Receba sua leitura via chamada de vídeo ou áudio' },
+              { step: 1, title: t.servicesPage.step1Title, desc: t.servicesPage.step1Desc },
+              { step: 2, title: t.servicesPage.step2Title, desc: t.servicesPage.step2Desc },
+              { step: 3, title: t.servicesPage.step3Title, desc: t.servicesPage.step3Desc },
             ].map((item) => (
               <div key={item.step} className="text-center">
                 <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-lg">
                   {item.step}
                 </div>
                 <h3 className="font-serif text-lg font-semibold text-foreground mb-2">
-                  {locale === 'en' ? item.titleEn : locale === 'es' ? item.titleEs : item.title}
+                  {item.title}
                 </h3>
                 <p className="text-muted-foreground text-sm">{item.desc}</p>
               </div>

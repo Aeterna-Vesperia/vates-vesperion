@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { MainLayout } from '@/components/main-layout'
 import { useLocale } from '@/lib/locale-context'
+import { contactData } from '@/lib/contact-data'
 import { cn } from '@/lib/utils'
 import { 
   Send, 
@@ -15,8 +16,20 @@ import {
   CheckCircle
 } from 'lucide-react'
 
+const iconMap = {
+  whatsapp: MessageCircle,
+  email: Mail,
+  instagram: Instagram,
+}
+
+const colorMap = {
+  whatsapp: '#25D366',
+  email: 'currentColor',
+  instagram: '#E4405F',
+}
+
 export default function ContatoPage() {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const [formState, setFormState] = useState({
     name: '',
     email: '',
@@ -25,6 +38,30 @@ export default function ContatoPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+
+  const getChannelName = (channel: typeof contactData.channels[0]) => {
+    if (locale === 'en') return channel.nameEn
+    if (locale === 'es') return channel.nameEs
+    return channel.name
+  }
+
+  const getChannelDescription = (channel: typeof contactData.channels[0]) => {
+    if (locale === 'en') return channel.descriptionEn
+    if (locale === 'es') return channel.descriptionEs
+    return channel.description
+  }
+
+  const getHoursText = () => {
+    if (locale === 'en') return contactData.hours.weekdaysEn
+    if (locale === 'es') return contactData.hours.weekdaysEs
+    return contactData.hours.weekdays
+  }
+
+  const getLocationText = () => {
+    if (locale === 'en') return contactData.location.typeEn
+    if (locale === 'es') return contactData.location.typeEs
+    return contactData.location.type
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -73,66 +110,45 @@ export default function ContatoPage() {
             {/* Contact Info */}
             <div>
               <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-8">
-                Fale Comigo
+                {t.contactPage.talkToMe}
               </h2>
               
               <div className="space-y-6">
-                {/* WhatsApp */}
-                <a
-                  href="https://wa.me/5521972592555?text=Olá! Gostaria de saber mais sobre as consultas."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 bg-card/30 border border-border/30 rounded-xl p-5 transition-all hover:border-primary/50 hover:bg-card/50 group"
-                >
-                  <div className="w-12 h-12 bg-[#25D366]/20 rounded-full flex items-center justify-center group-hover:bg-[#25D366]/30 transition-colors">
-                    <MessageCircle className="w-6 h-6 text-[#25D366]" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">{t.contactPage.whatsapp}</h3>
-                    <p className="text-muted-foreground text-sm">Resposta rápida e direta</p>
-                  </div>
-                </a>
+                {contactData.channels.map((channel) => {
+                  const Icon = iconMap[channel.icon]
+                  const color = colorMap[channel.icon]
+                  const bgColor = channel.icon === 'email' ? 'bg-primary/10' : channel.icon === 'whatsapp' ? 'bg-[#25D366]/20' : 'bg-pink-500/20'
+                  const hoverBgColor = channel.icon === 'email' ? 'group-hover:bg-primary/20' : channel.icon === 'whatsapp' ? 'group-hover:bg-[#25D366]/30' : 'group-hover:bg-pink-500/30'
+                  const textColor = channel.icon === 'email' ? 'text-primary' : channel.icon === 'whatsapp' ? 'text-[#25D366]' : 'text-pink-500'
 
-                {/* Email */}
-                <a
-                  href="mailto:vatesvesperion@proton.me?subject=Contato%20via%20site&body=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20as%20consultas."
-                  className="flex items-center gap-4 bg-card/30 border border-border/30 rounded-xl p-5 transition-all hover:border-primary/50 hover:bg-card/50 group"
-                >
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                    <Mail className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">E-mail</h3>
-                    <p className="text-muted-foreground text-sm">vatesvesperion@proton.me</p>
-                  </div>
-                </a>
-
-                {/* Instagram */}
-                <a
-                  href="https://instagram.com/vatesvesperion"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 bg-card/30 border border-border/30 rounded-xl p-5 transition-all hover:border-primary/50 hover:bg-card/50 group"
-                >
-                  <div className="w-12 h-12 bg-pink-500/20 rounded-full flex items-center justify-center group-hover:bg-pink-500/30 transition-colors">
-                    <Instagram className="w-6 h-6 text-pink-500" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">Instagram</h3>
-                    <p className="text-muted-foreground text-sm">@vatesvesperion</p>
-                  </div>
-                </a>
+                  return (
+                    <a
+                      key={channel.id}
+                      href={channel.url}
+                      {...(channel.icon !== 'email' && { target: '_blank', rel: 'noopener noreferrer' })}
+                      className="flex items-center gap-4 bg-card/30 border border-border/30 rounded-xl p-5 transition-all hover:border-primary/50 hover:bg-card/50 group"
+                    >
+                      <div className={cn('w-12 h-12 rounded-full flex items-center justify-center transition-colors', bgColor, hoverBgColor)}>
+                        <Icon className={cn('w-6 h-6', textColor)} />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground">{getChannelName(channel)}</h3>
+                        <p className="text-muted-foreground text-sm">{getChannelDescription(channel)}</p>
+                      </div>
+                    </a>
+                  )
+                })}
               </div>
 
               {/* Additional Info */}
               <div className="mt-10 space-y-4">
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <Clock className="w-5 h-5 text-primary" />
-                  <span>Atendimento de Segunda a Sexta, 13h às 23:59h</span>
+                  <span>{getHoursText()} ({contactData.hours.timeStart} às {contactData.hours.timeEnd})</span>
                 </div>
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <MapPin className="w-5 h-5 text-primary" />
-                  <span>Atendimento 100% Online</span>
+                  <span>{getLocationText()}</span>
                 </div>
               </div>
 
@@ -152,7 +168,7 @@ export default function ContatoPage() {
             <div>
               <div className="bg-card/30 border border-border/30 rounded-2xl p-8">
                 <h2 className="font-serif text-2xl font-bold text-foreground mb-6">
-                  Envie uma Mensagem
+                  {t.contactPage.sendMessage}
                 </h2>
 
                 {isSubmitted ? (
@@ -161,10 +177,10 @@ export default function ContatoPage() {
                       <CheckCircle className="w-8 h-8 text-green-500" />
                     </div>
                     <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
-                      Mensagem Enviada!
+                      {t.contactPage.messageSent}
                     </h3>
                     <p className="text-muted-foreground">
-                      Retornarei em breve. Obrigado pelo contato!
+                      {t.contactPage.thankYou}
                     </p>
                   </div>
                 ) : (
@@ -182,7 +198,7 @@ export default function ContatoPage() {
                         onChange={handleChange}
                         required
                         className="w-full px-4 py-3 bg-background border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors"
-                        placeholder="Seu nome completo"
+                        placeholder={t.contactPage.fullName}
                       />
                     </div>
 
@@ -199,7 +215,7 @@ export default function ContatoPage() {
                         onChange={handleChange}
                         required
                         className="w-full px-4 py-3 bg-background border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors"
-                        placeholder="seu@email.com"
+                        placeholder={t.contactPage.emailPlaceholder}
                       />
                     </div>
 
@@ -215,7 +231,7 @@ export default function ContatoPage() {
                         value={formState.phone}
                         onChange={handleChange}
                         className="w-full px-4 py-3 bg-background border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors"
-                        placeholder="(21) 99999-9999"
+                        placeholder={t.contactPage.phonePlaceholder}
                       />
                     </div>
 
@@ -232,7 +248,7 @@ export default function ContatoPage() {
                         required
                         rows={5}
                         className="w-full px-4 py-3 bg-background border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors resize-none"
-                        placeholder="Conte-me como posso ajudá-lo..."
+                        placeholder={t.contactPage.messagePlaceholder}
                       />
                     </div>
 
@@ -250,7 +266,7 @@ export default function ContatoPage() {
                       {isSubmitting ? (
                         <>
                           <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                          Enviando...
+                          {t.contactPage.sending}
                         </>
                       ) : (
                         <>

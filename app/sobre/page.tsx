@@ -5,56 +5,37 @@ import Link from 'next/link'
 import { MainLayout } from '@/components/main-layout'
 import { useLocale } from '@/lib/locale-context'
 import { Sparkles, Heart, Eye, Moon, Star, ArrowRight } from 'lucide-react'
+import { aboutData } from '@/lib/about-data'
 
 export default function SobrePage() {
   const { locale, t } = useLocale()
 
-  const values = [
-    {
-      icon: Eye,
-      title: 'Clareza',
-      titleEn: 'Clarity',
-      titleEs: 'Claridad',
-      desc: 'Leituras honestas e transparentes, sem rodeios',
-      descEn: 'Honest and transparent readings, without beating around the bush',
-      descEs: 'Lecturas honestas y transparentes, sin rodeos',
-    },
-    {
-      icon: Heart,
-      title: 'Empatia',
-      titleEn: 'Empathy',
-      titleEs: 'Empatía',
-      desc: 'Cada consulta é tratada com respeito e acolhimento',
-      descEn: 'Every consultation is treated with respect and warmth',
-      descEs: 'Cada consulta es tratada con respeto y acogida',
-    },
-    {
-      icon: Moon,
-      title: 'Confidencialidade',
-      titleEn: 'Confidentiality',
-      titleEs: 'Confidencialidad',
-      desc: 'Sigilo absoluto em cada consulta, sua privacidade é sagrada',
-      descEn: 'Absolute secrecy in every consultation, your privacy is sacred',
-      descEs: 'Sigilo absoluto en cada consulta, su privacidad es sagrada',
-    },
-    {
-      icon: Star,
-      title: 'Excelência',
-      titleEn: 'Excellence',
-      titleEs: 'Excelencia',
-      desc: 'Compromisso com a qualidade em cada atendimento',
-      descEn: 'Commitment to quality in every service',
-      descEs: 'Compromiso con la calidad en cada atención',
-    },
-  ]
+  const iconMap = {
+    eye: Eye,
+    heart: Heart,
+    moon: Moon,
+    star: Star,
+  }
 
-  const getValueTitle = (v: typeof values[0]) => {
+  const getStoryText = (paragraph: typeof aboutData.story[0]) => {
+    if (locale === 'en') return paragraph.en
+    if (locale === 'es') return paragraph.es
+    return paragraph.pt
+  }
+
+  const getMissionText = (text: typeof aboutData.mission) => {
+    if (locale === 'en') return text.en
+    if (locale === 'es') return text.es
+    return text.pt
+  }
+
+  const getValueTitle = (v: typeof aboutData.values[0]) => {
     if (locale === 'en') return v.titleEn
     if (locale === 'es') return v.titleEs
     return v.title
   }
 
-  const getValueDesc = (v: typeof values[0]) => {
+  const getValueDesc = (v: typeof aboutData.values[0]) => {
     if (locale === 'en') return v.descEn
     if (locale === 'es') return v.descEs
     return v.desc
@@ -101,22 +82,11 @@ export default function SobrePage() {
                 <span className="text-gold-gradient">Vates Vesperion</span>
               </h2>
               <div className="space-y-6 text-foreground/90 leading-relaxed">
-                <p>
-                  Desde jovem, sempre senti uma conexão profunda com o mundo invisível. As cartas 
-                  chamaram minha atenção antes mesmo de entender seu verdadeiro poder. O que começou 
-                  como curiosidade se transformou em uma vocação que guia minha vida há mais de uma década.
-                </p>
-                <p>
-                  Formado em diferentes tradições oraculares, trabalho com Tarot, Baralho Cigano 
-                  (Lenormand), Sibilla e Cleromancia. Cada sistema tem sua própria linguagem, 
-                  e é meu papel traduzir essas mensagens para que você possa compreender os 
-                  caminhos que se abrem à sua frente.
-                </p>
-                <p>
-                  Acredito que os oráculos não determinam o futuro — eles iluminam possibilidades. 
-                  Você sempre mantém o poder de escolha. Meu trabalho é oferecer clareza para 
-                  que suas decisões sejam mais conscientes e alinhadas com seu verdadeiro propósito.
-                </p>
+                {aboutData.story.map((paragraph, index) => (
+                  <p key={index}>
+                    {getStoryText(paragraph)}
+                  </p>
+                ))}
                 <p className="text-muted-foreground italic">
                   &quot;A noite revela o que o sol não ousa dizer.&quot;
                 </p>
@@ -134,10 +104,7 @@ export default function SobrePage() {
               {t.aboutPage.mission}
             </h2>
             <p className="text-foreground/90 text-lg leading-relaxed mb-8">
-              Minha missão é democratizar o acesso aos oráculos, oferecendo consultas de 
-              alta qualidade com respeito às tradições ancestrais. Acredito que todos 
-              merecem ter acesso a orientação espiritual genuína, independente de onde 
-              estejam ou qual seja sua história.
+              {getMissionText(aboutData.mission)}
             </p>
             <div className="w-24 h-1 bg-gold-gradient mx-auto rounded-full" />
           </div>
@@ -148,14 +115,14 @@ export default function SobrePage() {
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-12 text-center">
-            Meus Valores
+            {getMissionText(aboutData.valuesTitle)}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value) => {
-              const Icon = value.icon
+            {aboutData.values.map((value) => {
+              const Icon = iconMap[value.icon]
               return (
                 <div
-                  key={value.title}
+                  key={value.id}
                   className="bg-card/30 border border-border/30 rounded-xl p-6 text-center transition-all hover:border-primary/30"
                 >
                   <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">

@@ -75,7 +75,7 @@ export default function LojaPage() {
       </section>
 
       {/* Filters & Search */}
-      <section className="py-6 bg-background border-b border-border/30 sticky top-[72px] z-40 backdrop-blur-md bg-background/95">
+      <section className="py-6 border-b border-border/30 sticky top-[72px] z-40 backdrop-blur-md bg-background/95">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Categories */}
@@ -130,7 +130,7 @@ export default function LojaPage() {
           {filteredProducts.length === 0 ? (
             <div className="text-center py-16">
               <ShoppingBag className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-muted-foreground">Nenhum produto encontrado</p>
+              <p className="text-muted-foreground">{t.shopPage.emptyState}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

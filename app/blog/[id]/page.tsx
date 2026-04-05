@@ -10,7 +10,7 @@ import { notFound } from 'next/navigation'
 
 export default function BlogPostPage() {
   const params = useParams()
-  const { locale } = useLocale()
+  const { locale, t } = useLocale()
   const postId = parseInt(params.id as string)
 
   const post = blogPosts.find((p) => p.id === postId)
@@ -23,6 +23,12 @@ export default function BlogPostPage() {
     if (locale === 'en') return post.titleEn
     if (locale === 'es') return post.titleEs
     return post.title
+  }
+
+  const getCategory = () => {
+    if (locale === 'en') return post.categoryEn
+    if (locale === 'es') return post.categoryEs
+    return post.category
   }
 
   const getContent = () => {
@@ -50,7 +56,7 @@ export default function BlogPostPage() {
             className="inline-flex items-center gap-2 text-primary hover:underline mb-8 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Voltar ao blog
+            {t.blogPage.backToBlog}
           </Link>
 
           <h1 className="font-serif text-4xl md:text-5xl lg:text-5xl font-bold text-foreground mb-6">
@@ -59,7 +65,7 @@ export default function BlogPostPage() {
 
           <div className="flex flex-wrap items-center gap-4 md:gap-8 text-muted-foreground text-sm md:text-base">
             <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold">
-              {post.category}
+              {getCategory()}
             </span>
             <span className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />

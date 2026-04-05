@@ -9,6 +9,8 @@ export interface Service {
   price: number
   originalPrice?: number
   duration?: string
+  durationEn?: string
+  durationEs?: string
   category: 'quick' | 'consultation' | 'special'
   subcategory?: 'love' | 'relations' | 'financial' | 'planning' | 'direction' | 'depth'
   isOffer?: boolean
@@ -53,6 +55,8 @@ export const services: Service[] = [
     descriptionEs: 'Lectura profunda con tiempo para preguntas',
     price: 64.99,
     duration: '30 minutos',
+    durationEn: '30 minutes',
+    durationEs: '30 minutos',
     category: 'consultation',
   },
   {
@@ -65,6 +69,8 @@ export const services: Service[] = [
     descriptionEs: 'Lectura completa con múltiples tiradas',
     price: 77.99,
     duration: '45 minutos',
+    durationEn: '45 minutes',
+    durationEs: '45 minutos',
     category: 'consultation',
   },
   {
@@ -77,6 +83,8 @@ export const services: Service[] = [
     descriptionEs: 'Sesión extendida para cuestiones complejas',
     price: 99.99,
     duration: '60 minutos',
+    durationEn: '60 minutes',
+    durationEs: '60 minutos',
     category: 'consultation',
   },
   

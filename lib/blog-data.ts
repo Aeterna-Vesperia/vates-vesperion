@@ -12,6 +12,8 @@ export interface BlogPost {
   date: string
   readTime: string
   category: string
+  categoryEn: string
+  categoryEs: string
   author?: string
 }
 
@@ -93,6 +95,8 @@ La belleza de los Arcanos Mayores radica en su universalidad: hablan a todas las
     date: '2026-03-15',
     readTime: '8 min',
     category: 'Tarot',
+    categoryEn: 'Tarot',
+    categoryEs: 'Tarot',
     author: 'Vesperion',
   },
   {
@@ -211,6 +215,8 @@ Muchos practicantes dominan ambos y los usan según la situación lo requiera.`,
     date: '2026-03-10',
     readTime: '6 min',
     category: 'Oráculos',
+    categoryEn: 'Oracles',
+    categoryEs: 'Oráculos',
     author: 'Vesperion',
   },
   {
@@ -335,6 +341,8 @@ Recuerda: los oráculos son herramientas de insight. El verdadero poder está en
     date: '2026-03-05',
     readTime: '5 min',
     category: 'Dicas',
+    categoryEn: 'Tips',
+    categoryEs: 'Consejos',
     author: 'Vesperion',
   },
 ]
