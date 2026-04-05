@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 export function WhatsAppButton() {
   return (
     <a
-      href="https://wa.me/5511999999999?text=Olá! Gostaria de saber mais sobre as consultas."
+      href="https://wa.me/5521972592555?text=Olá! Gostaria de saber mais sobre as consultas."
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
