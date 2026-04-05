@@ -63,7 +63,7 @@ export function HeroSection() {
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
-            href="/loja"
+            href="/em-construcao"
             className="group border border-primary/50 text-foreground px-8 py-4 rounded-lg font-medium text-sm tracking-wide transition-all duration-300 hover:border-primary hover:bg-primary/10 flex items-center gap-2"
           >
             {t.hero.ctaSecondary}
