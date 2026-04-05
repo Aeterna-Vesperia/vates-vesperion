@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { blogPosts } from '@/lib/blog-data'
 
 export default function BlogPage() {
-  const { locale } = useLocale()
+  const { locale, t } = useLocale()
 
   const getTitle = (post: typeof blogPosts[0]) => {
     if (locale === 'en') return post.titleEn
