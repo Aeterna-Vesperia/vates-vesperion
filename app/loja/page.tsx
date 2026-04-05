@@ -1,10 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { MainLayout } from '@/components/main-layout'
 import { useLocale } from '@/lib/locale-context'
 import { useCart } from '@/lib/cart-context'
 import { products, categories, type Product } from '@/lib/products-data'
+import { ProductVariantModal } from '@/components/product-variant-modal'
+import { getActiveDiscount, calculateDiscountedPrice } from '@/lib/promotions'
 import { cn } from '@/lib/utils'
 import { 
   ShoppingBag, 
@@ -22,12 +25,23 @@ export default function LojaPage() {
   const { items, addItem, removeItem, updateQuantity, totalItems, totalPrice, isOpen, setIsOpen } = useCart()
   const [activeCategory, setActiveCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedProductForVariant, setSelectedProductForVariant] = useState<Product | null>(null)
+  const [variantModalOpen, setVariantModalOpen] = useState(false)
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
     }).format(price)
+  }
+
+  const getPriceWithDiscount = (productId: string, price: number) => {
+    const discountPercent = getActiveDiscount(productId)
+    if (!discountPercent) {
+      return { finalPrice: price, originalPrice: null, discountPercent: null }
+    }
+    const finalPrice = calculateDiscountedPrice(price, discountPercent)
+    return { finalPrice, originalPrice: price, discountPercent }
   }
 
   const getProductName = (product: Product) => {
@@ -134,72 +148,81 @@ export default function LojaPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className={cn(
-                    'group bg-card/30 border border-border/30 rounded-xl overflow-hidden',
-                    'transition-all duration-500 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1'
-                  )}
-                >
-                  {/* Product Image */}
-                  <div className="aspect-square relative bg-background-secondary overflow-hidden">
-                    <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-transparent" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <ShoppingBag className="w-20 h-20 text-primary/20" />
-                    </div>
-                    {product.featured && (
-                      <div className="absolute top-3 left-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" />
-                        Destaque
-                      </div>
+              {filteredProducts.map((product) => {
+                const { finalPrice, originalPrice, discountPercent } = getPriceWithDiscount(product.id, product.price)
+
+                return (
+                  <div
+                    key={product.id}
+                    className={cn(
+                      'group bg-card/30 border border-border/30 rounded-xl overflow-hidden flex flex-col h-full',
+                      'transition-all duration-500 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1'
                     )}
-                    {product.discountPercent && (
-                      <div className="absolute top-3 right-3 bg-destructive text-destructive-foreground px-2 py-1 rounded text-xs font-bold">
-                        -{product.discountPercent}%
+                  >
+                    {/* Product Image - Clickable Link */}
+                    <Link href={`/loja/${product.id}`}>
+                      <div className="aspect-square relative bg-background-secondary overflow-hidden cursor-pointer">
+                        <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-transparent" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <ShoppingBag className="w-20 h-20 text-primary/20" />
+                        </div>
+                        {product.featured && !discountPercent && (
+                          <div className="absolute top-3 left-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                            <Sparkles className="w-3 h-3" />
+                            Destaque
+                          </div>
+                        )}
+                        {discountPercent && (
+                          <div className="absolute top-3 right-3 bg-primary text-primary-foreground px-2 py-1 rounded text-xs font-bold">
+                            -{discountPercent}%
+                          </div>
+                        )}
                       </div>
-                    )}
-                    {/* Hover overlay */}
-                    <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    </Link>
+
+                    {/* Product Info - Also Clickable */}
+                    <Link href={`/loja/${product.id}`} className="flex-1 flex flex-col">
+                      <div className="p-5 flex-1 flex flex-col">
+                        <h3 className="font-serif text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-1">
+                          {getProductName(product)}
+                        </h3>
+                        <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-1">
+                          {getProductDesc(product)}
+                        </p>
+                        <div>
+                          {originalPrice && (
+                            <span className="text-muted-foreground/60 text-sm line-through mr-2">
+                              {formatPrice(originalPrice)}
+                            </span>
+                          )}
+                          <span className="text-primary font-bold text-lg">
+                            {formatPrice(finalPrice)}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+
+                    {/* Add to Cart Button - Always Visible */}
+                    <div className="px-5 pb-5 mt-auto border-t border-border/30 pt-4">
                       <button
-                        onClick={() => addItem(product)}
-                        className="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold text-sm flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          if (product.variants && product.variants.length > 0) {
+                            setSelectedProductForVariant(product)
+                            setVariantModalOpen(true)
+                          } else {
+                            addItem(product)
+                          }
+                        }}
+                        className="w-full bg-primary/10 text-primary py-2 rounded-lg hover:bg-primary/20 transition-colors font-medium text-sm flex items-center justify-center gap-2"
                       >
                         <Plus className="w-4 h-4" />
                         {t.shop.addToCart}
                       </button>
                     </div>
                   </div>
-
-                  {/* Product Info */}
-                  <div className="p-5">
-                    <h3 className="font-serif text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-1">
-                      {getProductName(product)}
-                    </h3>
-                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                      {getProductDesc(product)}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        {product.originalPrice && (
-                          <span className="text-muted-foreground/60 text-sm line-through mr-2">
-                            {formatPrice(product.originalPrice)}
-                          </span>
-                        )}
-                        <span className="text-primary font-bold text-lg">
-                          {formatPrice(product.price)}
-                        </span>
-                      </div>
-                      <button
-                        onClick={() => addItem(product)}
-                        className="p-2 bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors lg:hidden"
-                      >
-                        <Plus className="w-5 h-5 text-primary" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>
@@ -237,33 +260,47 @@ export default function LojaPage() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {items.map((item) => (
-                    <div
-                      key={item.product.id}
-                      className="flex gap-4 bg-card/30 border border-border/30 rounded-lg p-4"
-                    >
-                      <div className="w-16 h-16 bg-background-secondary rounded-lg flex items-center justify-center flex-shrink-0">
-                        <ShoppingBag className="w-8 h-8 text-primary/30" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-foreground text-sm line-clamp-1">
-                          {getProductName(item.product)}
-                        </h3>
-                        <p className="text-primary font-semibold text-sm mt-1">
-                          {formatPrice(item.product.price)}
-                        </p>
-                        <div className="flex items-center gap-2 mt-2">
-                          <button
-                            onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                            className="p-1 bg-card hover:bg-border rounded transition-colors"
-                          >
-                            <Minus className="w-3 h-3 text-muted-foreground" />
-                          </button>
-                          <span className="text-sm text-foreground w-6 text-center">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                  {items.map((item) => {
+                    const { finalPrice } = getPriceWithDiscount(item.product.id, item.product.price)
+                    const getVariantName = (variant: typeof item.variant) => {
+                      if (!variant) return null
+                      if (locale === 'en') return variant.nameEn
+                      if (locale === 'es') return variant.nameEs
+                      return variant.name
+                    }
+                    
+                    return (
+                      <div
+                        key={`${item.product.id}-${item.variant?.id || ''}`}
+                        className="flex gap-4 bg-card/30 border border-border/30 rounded-lg p-4"
+                      >
+                        <div className="w-16 h-16 bg-background-secondary rounded-lg flex items-center justify-center flex-shrink-0">
+                          <ShoppingBag className="w-8 h-8 text-primary/30" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-medium text-foreground text-sm line-clamp-1">
+                            {getProductName(item.product)}
+                          </h3>
+                          {item.variant && (
+                            <p className="text-muted-foreground text-xs">
+                              {getVariantName(item.variant)}
+                            </p>
+                          )}
+                          <p className="text-primary font-semibold text-sm mt-1">
+                            {formatPrice(finalPrice)}
+                          </p>
+                          <div className="flex items-center gap-2 mt-2">
+                            <button
+                              onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.variant?.id)}
+                              className="p-1 bg-card hover:bg-border rounded transition-colors"
+                            >
+                              <Minus className="w-3 h-3 text-muted-foreground" />
+                            </button>
+                            <span className="text-sm text-foreground w-6 text-center">
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.variant?.id)}
                             className="p-1 bg-card hover:bg-border rounded transition-colors"
                           >
                             <Plus className="w-3 h-3 text-muted-foreground" />
@@ -271,13 +308,14 @@ export default function LojaPage() {
                         </div>
                       </div>
                       <button
-                        onClick={() => removeItem(item.product.id)}
+                        onClick={() => removeItem(item.product.id, item.variant?.id)}
                         className="p-2 text-muted-foreground hover:text-destructive transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>
@@ -296,6 +334,20 @@ export default function LojaPage() {
             )}
           </div>
         </>
+      )}
+
+      {/* Product Variant Modal */}
+      {selectedProductForVariant && (
+        <ProductVariantModal
+          product={selectedProductForVariant}
+          open={variantModalOpen}
+          onOpenChange={(open) => {
+            setVariantModalOpen(open)
+            if (!open) {
+              setSelectedProductForVariant(null)
+            }
+          }}
+        />
       )}
     </MainLayout>
   )

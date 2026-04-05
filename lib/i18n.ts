@@ -62,10 +62,9 @@ export const translations = {
       heroSubtitle: 'Descubra os mistérios que aguardam por você',
       filters: {
         all: 'Todos',
-        readings: 'Leituras',
-        spells: 'Feitiços & Rituais',
         quick: 'Respostas Rápidas',
-        special: 'Tiragens Especiais'
+        special: 'Tiragens Especiais',
+        complete: 'Consulta Completa'
       },
       quickAnswers: 'Respostas Rápidas',
       fullConsultation: 'Consulta Completa',
@@ -192,10 +191,9 @@ export const translations = {
       heroSubtitle: 'Discover the mysteries that await you',
       filters: {
         all: 'All',
-        readings: 'Readings',
-        spells: 'Spells & Rituals',
         quick: 'Quick Answers',
-        special: 'Special Readings'
+        special: 'Special Readings',
+        complete: 'Full Consultation'
       },
       quickAnswers: 'Quick Answers',
       fullConsultation: 'Full Consultation',
@@ -322,10 +320,9 @@ export const translations = {
       heroSubtitle: 'Descubre los misterios que te esperan',
       filters: {
         all: 'Todos',
-        readings: 'Lecturas',
-        spells: 'Hechizos y Rituales',
         quick: 'Respuestas Rápidas',
-        special: 'Tiradas Especiales'
+        special: 'Tiradas Especiales',
+        complete: 'Consulta Completa'
       },
       quickAnswers: 'Respuestas Rápidas',
       fullConsultation: 'Consulta Completa',

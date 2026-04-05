@@ -7,15 +7,11 @@ export interface Service {
   descriptionEn: string
   descriptionEs: string
   price: number
-  originalPrice?: number
   duration?: string
   durationEn?: string
   durationEs?: string
   category: 'quick' | 'consultation' | 'special'
   subcategory?: 'love' | 'relations' | 'financial' | 'planning' | 'direction' | 'depth'
-  isOffer?: boolean
-  discountStart?: Date
-  discountEnd?: Date
 }
 
 export const services: Service[] = [
@@ -30,7 +26,6 @@ export const services: Service[] = [
     descriptionEs: 'Pregunta de sí o no respondida con cleromancia (dados). Además de la respuesta directa, recibes contexto claro.',
     price: 5.99,
     category: 'quick',
-    isOffer: true,
   },
   {
     id: 'pergunta-detalhada',

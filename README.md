@@ -89,29 +89,79 @@ npm run build
 - [x] **Temas Avançados** - Dark Wine + Gold Premium
 - [x] **4 Oráculos** - Tarot, Baralho Cigano, Sibilla, Cleromancia
 - [x] **Páginas Completas** - Home, Serviços, Loja, Sobre, Contato, Blog (em construção)
+- [x] **Blog/Artigos** - Conteúdo educativo sobre esoterismo
+- [x] **SEO Base** - Meta tags, OpenGraph, Analytics Vercel
 
-### 🔄 Em Desenvolvimento
-- [ ] **Sistema de Pagamento** - Integração PIX/Cartão
+### 🔴 CRÍTICO - Essencial para E-commerce
+
+#### Sistema de Pagamento
+- [ ] **Integração Mercado Pago** - Cartão de crédito, débito, PIX
+- [ ] **Webhooks de Confirmação** - Validação de pagamentos
+- [ ] **Página de Checkout** - Formulário com integração Mercado Pago
+- [ ] **Confirmação de Pedido** - Email e dashboard
+
+#### Sistema de Entrega
+- [ ] **Integração CEP** - Lookup de endereço via API Viacep/Correios
+- [ ] **Cálculo de Frete** - Simulação de entrega (Correios, Sedex, Loggi, Jadlog)
+- [ ] **Dados de Entrega** - Formulário com validação de endereço
+- [ ] **Estimativa de Prazo** - Exibição de data de entrega estimada
+
+#### Autenticação & Segurança
+- [ ] **Sistema de Autenticação** - Login/cadastro de usuários (NextAuth.js ou similar)
+- [ ] **Hash de Senhas** - Bcrypt ou libsodium
+- [ ] **Validação de Inputs** - Sanitização de dados de formulário
+- [ ] **HTTPS & CSP Headers** - Content Security Policy configurada
+- [ ] **CORS Configuration** - Proteção contra requisições não autorizadas
+- [ ] **Rate Limiting** - Proteção contra brute force e DDoS
+- [ ] **Variáveis de Ambiente** - .env.local com chaves Mercado Pago, CEP API, etc.
+
+### 🟡 MÉDIO - Importante para UX
+
+#### Imagens & Conteúdo Visual
+- [ ] **Fotos nos Serviços** - Adicionar campo de imagem em services-data.ts
+  - [ ] Ícones/imagens para Tarot
+  - [ ] Ícones/imagens para Baralho Cigano
+  - [ ] Ícones/imagens para Astrologia
+  - [ ] Ícones/imagens para Cleromancia
+- [ ] **Galeria de Produtos** - Mais imagens para VesperYx
+- [ ] **Depoimentos com Avatar** - Fotos dos clientes
+
+#### SEO Avançado
+- [ ] **Sitemap.xml** - Gerador automático de sitemap
+- [ ] **Robots.txt** - Otimizado para buscadores
+- [ ] **Schema.org Structured Data** - JSON-LD para produtos e serviços
+- [ ] **Canonical Tags** - Em páginas de idioma alternativo
+- [ ] **OG Images** - Imagens customizadas por página
+- [ ] **Hreflang Tags** - Alternativas de linguagem para SEO multilíngue
+
+#### Dashboard & Histórico
 - [ ] **Dashboard do Cliente** - Histórico de consultas
-- [ ] **Agendamento Online** - Calendário integrado
-- [ ] **Sistema de Avaliações** - Reviews de clientes
-- [ ] **Finalizar Página Sobre** - Expandir história e experiência
+  - [ ] Login obrigatório
+  - [ ] Listagem de consultas passadas
+  - [ ] Status de consulta agendada
+  - [ ] Dados de pagamento e fatura
+- [ ] **Agendamento Online** - Calendário integrado para agendar seguimentos
+- [ ] **Sistema de Avaliações** - Reviews e ratings de clientes
 
-### 🆕 Próximas Funcionalidades
-- [ ] **Blog/Artigos** - Conteúdo educativo sobre esoterismo
+### 🟢 BAIXA PRIORIDADE - Futuras Expansões
+
+#### Novas Funcionalidades de Conteúdo
 - [ ] **Novos Oráculos** - Runas, Astrologia Védica
 - [ ] **Seção de Feitiços e Rituais** - Catálogo de trabalhos energéticos
 - [ ] **Notificações Push** - Alertas de consultas e promoções
-- [ ] **Vendas de Produtos** - Cristais, velas, cards (VesperYx)
+- [ ] **Vendas de Produtos Físicos** - Cristais, velas, cards (VesperYx)
 - [ ] **Afiliados & Parcerias** - Programa de referência
+- [ ] **Finalizar Página Sobre** - Expandir história e experiência
 
-### 🔧 Melhorias Técnicas
+#### Melhorias Técnicas & Performance
 - [ ] **Testes Automatizados** - Jest + React Testing Library
-- [ ] **PWA** - Progressive Web App
-- [ ] **Analytics** - Google Analytics integrado
-- [ ] **Performance** - Otimização de imagens e lazy loading
-- [ ] **Acessibilidade** - Melhorias WCAG
-- [ ] **Cache Strategy** - Service Workers
+- [ ] **PWA** - Progressive Web App com offline support
+- [ ] **Google Analytics** - Integração (GA4)
+- [ ] **Otimização de Imagens** - Compression automática
+- [ ] **Lazy Loading** - Carregamento sob demanda
+- [ ] **Acessibilidade** - Melhorias WCAG 2.1 AA
+- [ ] **Service Workers** - Cache strategy avançada
+- [ ] **Banco de Dados** - Migração para PostgreSQL para histórico
 
 ## 📁 Estrutura do Projeto
 

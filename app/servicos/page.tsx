@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { MainLayout } from '@/components/main-layout'
 import { useLocale } from '@/lib/locale-context'
 import { services, oracles, faqItems, type Service } from '@/lib/services-data'
+import { getActiveDiscount, calculateDiscountedPrice } from '@/lib/promotions'
 import { cn } from '@/lib/utils'
 import { 
   Sparkles, 
@@ -30,7 +31,7 @@ const categoryIcons = {
   depth: Layers,
 }
 
-const filters = ['all', 'readings', 'spells', 'quick', 'special'] as const
+const filters = ['all', 'quick', 'special', 'complete'] as const
 
 export default function ServicosPage() {
   const { locale, t } = useLocale()
@@ -42,6 +43,15 @@ export default function ServicosPage() {
       style: 'currency',
       currency: 'BRL',
     }).format(price)
+  }
+
+  const getPriceWithDiscount = (serviceId: string, price: number) => {
+    const discountPercent = getActiveDiscount(serviceId)
+    if (!discountPercent) {
+      return { finalPrice: price, originalPrice: null, discountPercent: null }
+    }
+    const finalPrice = calculateDiscountedPrice(price, discountPercent)
+    return { finalPrice, originalPrice: price, discountPercent }
   }
 
   const getServiceName = (service: Service) => {
@@ -60,7 +70,7 @@ export default function ServicosPage() {
     if (activeFilter === 'all') return true
     if (activeFilter === 'quick') return service.category === 'quick'
     if (activeFilter === 'special') return service.category === 'special'
-    if (activeFilter === 'readings') return service.category === 'consultation'
+    if (activeFilter === 'complete') return service.category === 'consultation'
     return true
   })
 
@@ -97,7 +107,7 @@ export default function ServicosPage() {
       </section>
 
       {/* Filters */}
-      <section className="py-8 bg-background border-b border-border/30 sticky top-[72px] z-40 backdrop-blur-md bg-background/95">
+      <section className="py-8  border-b border-border/30 sticky top-[72px] z-40 backdrop-blur-md bg-background/95">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-3">
             {filters.map((filter) => (
@@ -127,47 +137,58 @@ export default function ServicosPage() {
               {t.servicesPage.quickAnswers}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {quickServices.map((service) => (
-                <div
-                  key={service.id}
-                  className={cn(
-                    'relative bg-card/50 border border-border/30 rounded-xl p-6',
-                    'transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10'
-                  )}
-                >
-                  {service.isOffer && (
-                    <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-                      <BadgePercent className="w-3 h-3" />
-                      Oferta
+              {quickServices.map((service) => {
+                const { finalPrice, originalPrice, discountPercent } = getPriceWithDiscount(service.id, service.price)
+                
+                return (
+                  <div
+                    key={service.id}
+                    className={cn(
+                      'relative bg-card/50 border border-border/30 rounded-xl p-6',
+                      'transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10'
+                    )}
+                  >
+                    {discountPercent && (
+                      <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                        <BadgePercent className="w-3 h-3" />
+                        -{discountPercent}%
+                      </div>
+                    )}
+                    <h3 className="font-serif text-lg font-semibold text-foreground mb-2">
+                      {getServiceName(service)}
+                    </h3>
+                    <p className="text-muted-foreground text-sm mb-4">
+                      {getServiceDesc(service)}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-col">
+                        {originalPrice && (
+                          <span className="text-muted-foreground/60 text-sm line-through">
+                            {formatPrice(originalPrice)}
+                          </span>
+                        )}
+                        <span className="text-primary font-bold text-xl">
+                          {formatPrice(finalPrice)}
+                        </span>
+                      </div>
+                      <Link
+                        href={`/contato?servico=${service.id}`}
+                        className="text-primary text-sm font-medium hover:underline flex items-center gap-1"
+                      >
+                        {t.servicesPage.book}
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
                     </div>
-                  )}
-                  <h3 className="font-serif text-lg font-semibold text-foreground mb-2">
-                    {getServiceName(service)}
-                  </h3>
-                  <p className="text-muted-foreground text-sm mb-4">
-                    {getServiceDesc(service)}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-primary font-bold text-xl">
-                      {formatPrice(service.price)}
-                    </span>
-                    <Link
-                      href={`/contato?servico=${service.id}`}
-                      className="text-primary text-sm font-medium hover:underline flex items-center gap-1"
-                    >
-                      {t.servicesPage.book}
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>
       )}
 
       {/* Full Consultations */}
-      {(activeFilter === 'all' || activeFilter === 'readings') && (
+      {(activeFilter === 'all' || activeFilter === 'complete') && (
         <section className="py-16 bg-background-secondary">
           <div className="container mx-auto px-4">
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
@@ -175,51 +196,62 @@ export default function ServicosPage() {
               {t.servicesPage.fullConsultation}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {consultationServices.map((service, index) => (
-                <div
-                  key={service.id}
-                  className={cn(
-                    'relative bg-card/50 border rounded-xl p-8 text-center',
-                    'transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1',
-                    index === 1 
-                      ? 'border-primary/50 shadow-lg shadow-primary/10' 
-                      : 'border-border/30 hover:border-primary/50'
-                  )}
-                >
-                  {index === 1 && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-semibold">
-                      Popular
-                    </div>
-                  )}
-                  <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
-                    {getServiceName(service)}
-                  </h3>
-                  <p className="text-muted-foreground text-sm mb-4">
-                    {getServiceDesc(service)}
-                  </p>
-                  {service.duration && (
-                    <p className="text-primary/70 text-sm mb-4 flex items-center justify-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      {service.duration}
-                    </p>
-                  )}
-                  <div className="text-primary font-bold text-3xl mb-6">
-                    {formatPrice(service.price)}
-                  </div>
-                  <Link
-                    href={`/contato?servico=${service.id}`}
+              {consultationServices.map((service, index) => {
+                const { finalPrice, originalPrice, discountPercent } = getPriceWithDiscount(service.id, service.price)
+                
+                return (
+                  <div
+                    key={service.id}
                     className={cn(
-                      'inline-flex items-center justify-center gap-2 w-full py-3 rounded-lg font-semibold transition-all',
-                      index === 1
-                        ? 'bg-gold-gradient text-primary-foreground hover:shadow-lg hover:shadow-primary/30'
-                        : 'border border-primary text-primary hover:bg-primary/10'
+                      'relative bg-card/50 border rounded-xl p-8 text-center',
+                      'transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1',
+                      index === 1 
+                        ? 'border-primary/50 shadow-lg shadow-primary/10' 
+                        : 'border-border/30 hover:border-primary/50'
                     )}
                   >
-                    {t.servicesPage.book}
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              ))}
+                    {(index === 1 || discountPercent) && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-semibold">
+                        {discountPercent ? `-${discountPercent}%` : 'Popular'}
+                      </div>
+                    )}
+                    <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
+                      {getServiceName(service)}
+                    </h3>
+                    <p className="text-muted-foreground text-sm mb-4">
+                      {getServiceDesc(service)}
+                    </p>
+                    {service.duration && (
+                      <p className="text-primary/70 text-sm mb-4 flex items-center justify-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        {service.duration}
+                      </p>
+                    )}
+                    <div className="mb-6">
+                      {originalPrice && (
+                        <div className="text-muted-foreground/60 text-sm line-through">
+                          {formatPrice(originalPrice)}
+                        </div>
+                      )}
+                      <div className="text-primary font-bold text-3xl">
+                        {formatPrice(finalPrice)}
+                      </div>
+                    </div>
+                    <Link
+                      href={`/contato?servico=${service.id}`}
+                      className={cn(
+                        'inline-flex items-center justify-center gap-2 w-full py-3 rounded-lg font-semibold transition-all',
+                        index === 1
+                          ? 'bg-gold-gradient text-primary-foreground hover:shadow-lg hover:shadow-primary/30'
+                          : 'border border-primary text-primary hover:bg-primary/10'
+                      )}
+                    >
+                      {t.servicesPage.book}
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </section>
@@ -246,33 +278,49 @@ export default function ServicosPage() {
                     {t.servicesPage.categories[categoryKey]}
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {categoryServices.map((service) => (
-                      <div
-                        key={service.id}
-                        className={cn(
-                          'bg-card/30 border border-border/30 rounded-lg p-5',
-                          'transition-all duration-300 hover:border-primary/50 hover:bg-card/50'
-                        )}
-                      >
-                        <h4 className="font-medium text-foreground mb-2">
-                          {getServiceName(service)}
-                        </h4>
-                        <p className="text-muted-foreground text-xs mb-3">
-                          {getServiceDesc(service)}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-primary font-bold">
-                            {formatPrice(service.price)}
-                          </span>
-                          <Link
-                            href={`/contato?servico=${service.id}`}
-                            className="text-primary/70 text-xs hover:text-primary"
-                          >
-                            {t.servicesPage.book} &rarr;
-                          </Link>
+                    {categoryServices.map((service) => {
+                      const { finalPrice, originalPrice, discountPercent } = getPriceWithDiscount(service.id, service.price)
+                      
+                      return (
+                        <div
+                          key={service.id}
+                          className={cn(
+                            'relative bg-card/30 border border-border/30 rounded-lg p-5',
+                            'transition-all duration-300 hover:border-primary/50 hover:bg-card/50'
+                          )}
+                        >
+                          {discountPercent && (
+                            <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-semibold">
+                              -{discountPercent}%
+                            </div>
+                          )}
+                          <h4 className="font-medium text-foreground mb-2">
+                            {getServiceName(service)}
+                          </h4>
+                          <p className="text-muted-foreground text-xs mb-3">
+                            {getServiceDesc(service)}
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <div className="flex flex-col">
+                              {originalPrice && (
+                                <span className="text-muted-foreground/60 text-xs line-through">
+                                  {formatPrice(originalPrice)}
+                                </span>
+                              )}
+                              <span className="text-primary font-bold">
+                                {formatPrice(finalPrice)}
+                              </span>
+                            </div>
+                            <Link
+                              href={`/contato?servico=${service.id}`}
+                              className="text-primary/70 text-xs hover:text-primary"
+                            >
+                              {t.servicesPage.book} &rarr;
+                            </Link>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 </div>
               )
