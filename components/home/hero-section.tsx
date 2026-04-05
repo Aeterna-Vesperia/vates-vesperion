@@ -34,7 +34,7 @@ export function HeroSection() {
         {/* Logo Symbol */}
         <div className="mb-8 flex justify-center">
           <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo-gbEjoGmlpyvX4xH4uf6i79xIR6C5fJ.png"
+            src="/Logos/Simple-Logo.png"
             alt="Vates Vesperion Symbol"
             width={100}
             height={100}
@@ -63,7 +63,7 @@ export function HeroSection() {
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
-            href="/em-construcao"
+            href="/servicos"
             className="group border border-primary/50 text-foreground px-8 py-4 rounded-lg font-medium text-sm tracking-wide transition-all duration-300 hover:border-primary hover:bg-primary/10 flex items-center gap-2"
           >
             {t.hero.ctaSecondary}

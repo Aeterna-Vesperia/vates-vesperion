@@ -23,7 +23,7 @@ export const translations = {
       title: 'VATES VESPERION',
       subtitle: 'A noite revela o que o sol não ousa dizer',
       cta: 'AGENDAR CONSULTA',
-      ctaSecondary: 'Conhecer a Loja Vesperyx'
+      ctaSecondary: 'Conhecer Serviços Oraculares'
     },
     services: {
       title: 'Serviços em Destaque',
@@ -121,7 +121,7 @@ export const translations = {
       title: 'VATES VESPERION',
       subtitle: 'The night reveals what the sun dares not speak',
       cta: 'BOOK CONSULTATION',
-      ctaSecondary: 'Explore Vesperyx Shop'
+      ctaSecondary: 'Explore Oracle Services'
     },
     services: {
       title: 'Featured Services',
@@ -219,7 +219,7 @@ export const translations = {
       title: 'VATES VESPERION',
       subtitle: 'La noche revela lo que el sol no se atreve a decir',
       cta: 'AGENDAR CONSULTA',
-      ctaSecondary: 'Conocer la Tienda Vesperyx'
+      ctaSecondary: 'Conocer Servicios Oraculares'
     },
     services: {
       title: 'Servicios Destacados',
