@@ -161,18 +161,18 @@ export const services: Service[] = [
     category: 'special',
     subcategory: 'love',
   },
-  {
-    id: 'templo-diabo',
-    name: 'Templo do Diabo',
-    nameEn: 'Temple of the Devil',
-    nameEs: 'Templo del Diablo',
-    description: 'Explorando paixões e desejos ocultos',
-    descriptionEn: 'Exploring hidden passions and desires',
-    descriptionEs: 'Explorando pasiones y deseos ocultos',
-    price: 44.99,
-    category: 'special',
-    subcategory: 'love',
-  },
+  // {
+  //   id: 'templo-diabo',
+  //   name: 'Templo do Diabo',
+  //   nameEn: 'Temple of the Devil',
+  //   nameEs: 'Templo del Diablo',
+  //   description: 'Explorando paixões e desejos ocultos',
+  //   descriptionEn: 'Exploring hidden passions and desires',
+  //   descriptionEs: 'Explorando pasiones y deseos ocultos',
+  //   price: 44.99,
+  //   category: 'special',
+  //   subcategory: 'love',
+  // },
   
   // Special Readings - Relations
   {
