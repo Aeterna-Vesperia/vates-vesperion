@@ -5,45 +5,7 @@ import { MainLayout } from '@/components/main-layout'
 import { useLocale } from '@/lib/locale-context'
 import { Calendar, Clock, ArrowRight, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-const blogPosts = [
-  {
-    id: 1,
-    title: 'Os Arcanos Maiores: Significados e Interpretações',
-    titleEn: 'The Major Arcana: Meanings and Interpretations',
-    titleEs: 'Los Arcanos Mayores: Significados e Interpretaciones',
-    excerpt: 'Descubra o poder transformador dos 22 Arcanos Maiores do Tarot e como eles refletem nossa jornada espiritual.',
-    excerptEn: 'Discover the transformative power of the 22 Major Arcana and how they reflect our spiritual journey.',
-    excerptEs: 'Descubre el poder transformador de los 22 Arcanos Mayores y cómo reflejan nuestro viaje espiritual.',
-    date: '2024-03-15',
-    readTime: '8 min',
-    category: 'Tarot',
-  },
-  {
-    id: 2,
-    title: 'Baralho Cigano vs Tarot: Qual escolher?',
-    titleEn: 'Gypsy Cards vs Tarot: Which to choose?',
-    titleEs: 'Baraja Gitana vs Tarot: ¿Cuál elegir?',
-    excerpt: 'Entenda as diferenças entre esses dois poderosos oráculos e saiba qual é o mais indicado para sua consulta.',
-    excerptEn: 'Understand the differences between these two powerful oracles and know which is best for your consultation.',
-    excerptEs: 'Comprende las diferencias entre estos dos poderosos oráculos y sabe cuál es el mejor para tu consulta.',
-    date: '2024-03-10',
-    readTime: '6 min',
-    category: 'Oráculos',
-  },
-  {
-    id: 3,
-    title: 'Como se preparar para uma leitura oracular',
-    titleEn: 'How to prepare for an oracle reading',
-    titleEs: 'Cómo prepararse para una lectura oracular',
-    excerpt: 'Dicas práticas para aproveitar ao máximo sua consulta e receber mensagens mais claras dos oráculos.',
-    excerptEn: 'Practical tips to make the most of your consultation and receive clearer messages from the oracles.',
-    excerptEs: 'Consejos prácticos para aprovechar al máximo tu consulta y recibir mensajes más claros de los oráculos.',
-    date: '2024-03-05',
-    readTime: '5 min',
-    category: 'Dicas',
-  },
-]
+import { blogPosts } from '@/lib/blog-data'
 
 export default function BlogPage() {
   const { locale } = useLocale()
