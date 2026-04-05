@@ -11,7 +11,7 @@ export function CTASection() {
   return (
     <section className="py-24 relative overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background-secondary to-background" />
+      <div className="absolute inset-0 bg-linear-to-b from-background via-background-secondary to-background" />
       
       {/* Decorative orbs */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
@@ -20,15 +20,15 @@ export function CTASection() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           {/* Logo */}
-          <div className="mb-8 flex justify-center">
+            <div className="mb-8 flex justify-center">
             <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo-gbEjoGmlpyvX4xH4uf6i79xIR6C5fJ.png"
+              src="/Logos/Simple-Logo.png"
               alt="Vates Vesperion"
               width={80}
               height={80}
               className="w-16 h-16 opacity-80"
             />
-          </div>
+            </div>
 
           {/* Title */}
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
@@ -52,9 +52,9 @@ export function CTASection() {
 
           {/* Decorative line */}
           <div className="mt-16 flex items-center justify-center gap-4">
-            <div className="w-16 h-px bg-gradient-to-r from-transparent to-primary/50" />
+            <div className="w-16 h-px bg-linear-to-r from-transparent to-primary/50" />
             <div className="w-2 h-2 bg-primary rounded-full" />
-            <div className="w-16 h-px bg-gradient-to-l from-transparent to-primary/50" />
+            <div className="w-16 h-px bg-linear-to-l from-transparent to-primary/50" />
           </div>
         </div>
       </div>

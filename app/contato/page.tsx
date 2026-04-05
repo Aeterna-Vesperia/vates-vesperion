@@ -51,7 +51,7 @@ export default function ContatoPage() {
   return (
     <MainLayout>
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-gradient-to-b from-background-secondary to-background relative overflow-hidden">
+      <section className="pt-32 pb-16 bg-linear-to-b from-background-secondary to-background relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary rounded-full blur-3xl" />
         </div>

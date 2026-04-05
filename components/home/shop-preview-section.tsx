@@ -79,7 +79,7 @@ export function ShopPreviewSection() {
             >
               {/* Product Image */}
               <div className="aspect-square relative bg-background-secondary overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-br from-primary/20 to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <ShoppingBag className="w-16 h-16 text-primary/30" />
                 </div>

@@ -20,8 +20,8 @@ export function HeroSection() {
           priority
         />
         {/* Overlay gradients */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/50" />
+        <div className="absolute inset-0 bg-linear-to-b from-background/60 via-background/40 to-background" />
+        <div className="absolute inset-0 bg-linear-to-r from-background/50 via-transparent to-background/50" />
       </div>
 
       {/* Decorative elements */}

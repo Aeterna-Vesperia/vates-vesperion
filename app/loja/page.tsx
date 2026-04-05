@@ -59,7 +59,7 @@ export default function LojaPage() {
   return (
     <MainLayout>
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-gradient-to-b from-background-secondary to-background relative overflow-hidden">
+      <section className="pt-32 pb-16 bg-linear-to-b from-background-secondary to-background relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary rounded-full blur-3xl" />
         </div>
@@ -144,7 +144,7 @@ export default function LojaPage() {
                 >
                   {/* Product Image */}
                   <div className="aspect-square relative bg-background-secondary overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-transparent" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <ShoppingBag className="w-20 h-20 text-primary/20" />
                     </div>

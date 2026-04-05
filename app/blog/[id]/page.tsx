@@ -43,7 +43,7 @@ export default function BlogPostPage() {
   return (
     <MainLayout>
       {/* Hero */}
-      <section className="pt-20 pb-12 bg-gradient-to-b from-background-secondary to-background">
+      <section className="pt-20 pb-12 bg-linear-to-b from-background-secondary to-background">
         <div className="container mx-auto px-4">
           <Link
             href="/blog"

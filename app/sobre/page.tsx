@@ -63,7 +63,7 @@ export default function SobrePage() {
   return (
     <MainLayout>
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-gradient-to-b from-background-secondary to-background relative overflow-hidden">
+      <section className="pt-32 pb-16 bg-linear-to-b from-background-secondary to-background relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary rounded-full blur-3xl" />
         </div>
@@ -81,14 +81,14 @@ export default function SobrePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Image */}
             <div className="relative">
-              <div className="aspect-[4/5] relative rounded-2xl overflow-hidden">
+              <div className="aspect-4/5 relative rounded-2xl overflow-hidden">
                 <Image
                   src="/images/foto.png"
                   alt="Vates Vesperion"
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-transparent" />
               </div>
               {/* Decorative frame */}
               <div className="absolute -inset-4 border border-primary/20 rounded-2xl -z-10" />

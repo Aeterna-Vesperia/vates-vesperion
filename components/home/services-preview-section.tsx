@@ -111,7 +111,7 @@ export function ServicesPreviewSection() {
               key={service.id}
               href={`/servicos#${service.id}`}
               className={cn(
-                'group relative bg-gradient-to-br from-card to-card/50 backdrop-blur-sm border border-border/30 rounded-xl overflow-hidden',
+                'group relative bg-linear-to-br from-card to-card/50 backdrop-blur-sm border border-border/30 rounded-xl overflow-hidden',
                 'transition-all duration-500 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2'
               )}
             >
@@ -123,10 +123,10 @@ export function ServicesPreviewSection() {
               </div>
 
               {/* Decorative icon background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
               {/* Icon area */}
-              <div className="h-32 relative bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center overflow-hidden">
+              <div className="h-32 relative bg-linear-to-br from-primary/10 to-primary/5 flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-primary rounded-full blur-xl group-hover:blur-2xl transition-all" />
                 </div>
