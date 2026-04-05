@@ -55,7 +55,7 @@ export const translations = {
       quickLinks: 'Links Rápidos',
       contact: 'Contato & Redes',
       payment: 'Formas de Pagamento',
-      copyright: '© 2024 Vates Vesperion. Todos os direitos reservados.'
+      copyright: '© 2026 Vates Vesperion. Todos os direitos reservados.'
     },
     servicesPage: {
       hero: 'Serviços Oraculares',
@@ -153,7 +153,7 @@ export const translations = {
       quickLinks: 'Quick Links',
       contact: 'Contact & Social',
       payment: 'Payment Methods',
-      copyright: '© 2024 Vates Vesperion. All rights reserved.'
+      copyright: '© 2026 Vates Vesperion. All rights reserved.'
     },
     servicesPage: {
       hero: 'Oracle Services',
@@ -251,7 +251,7 @@ export const translations = {
       quickLinks: 'Enlaces Rápidos',
       contact: 'Contacto y Redes',
       payment: 'Formas de Pago',
-      copyright: '© 2024 Vates Vesperion. Todos los derechos reservados.'
+      copyright: '© 2026 Vates Vesperion. Todos los derechos reservados.'
     },
     servicesPage: {
       hero: 'Servicios Oraculares',
