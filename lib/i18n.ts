@@ -22,8 +22,8 @@ export const translations = {
     hero: {
       title: 'VATES VESPERION',
       subtitle: 'A noite revela o que o sol não ousa dizer',
-      cta: 'AGENDAR CONSULTA',
-      ctaSecondary: 'Conhecer Serviços Oraculares'
+      cta: 'Revelar meu destino agora',
+      ctaSecondary: '✨ Conhecer meus serviços oraculares'
     },
     services: {
       title: 'Serviços em Destaque',
@@ -152,8 +152,8 @@ export const translations = {
     hero: {
       title: 'VATES VESPERION',
       subtitle: 'The night reveals what the sun dares not speak',
-      cta: 'BOOK CONSULTATION',
-      ctaSecondary: 'Explore Oracle Services'
+      cta: 'Reveal my destiny now',
+      ctaSecondary: '✨ Explore my oracle services'
     },
     services: {
       title: 'Featured Services',
@@ -282,8 +282,8 @@ export const translations = {
     hero: {
       title: 'VATES VESPERION',
       subtitle: 'La noche revela lo que el sol no se atreve a decir',
-      cta: 'AGENDAR CONSULTA',
-      ctaSecondary: 'Conocer Servicios Oraculares'
+      cta: 'Revelar mi destino ahora',
+      ctaSecondary: '✨ Conocer mis servicios oraculares'
     },
     services: {
       title: 'Servicios Destacados',
